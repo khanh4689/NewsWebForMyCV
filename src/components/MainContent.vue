@@ -22,27 +22,35 @@
             </div>
         </nav>
 
-        <div v-if="filteredPosts.length" class="container">
-            <div v-for="post in filteredPosts" :key="post.id" class="row align-items-center p-2 mb-2">
-                <div class="col-auto">
-                    <img :src="post.imageFile" alt="Post Image" class="img-fluid rounded" style="width: 155px; height: 110px; object-fit: cover;">
-                </div>
-                <div class="col">
-                    <h5 class="fw-bold">{{ post.title }}</h5>
-                    <p class="text-muted mb-1">
+        <div v-if="filteredPosts.length" class="container mb-4">
+    <div class="featured-post mb-5">
+        <img :src="filteredPosts[0].imageFile" class="w-100 rounded mb-3" style="height: 300px; object-fit: cover;">
+        <h2 class="fw-bold">{{ filteredPosts[0].title }}</h2>
+        <p class="text-muted">{{ filteredPosts[0].description }}</p>
+        <router-link :to="`/news/${filteredPosts[0].id}`" class="btn btn-primary">Đọc tiếp</router-link>
+    </div>
+</div>
+<div v-if="filteredPosts.length" class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div v-for="post in filteredPosts" :key="post.id" class="col">
+            <div class="card news-card h-100">
+                <img :src="post.imageFile" class="card-img-top" alt="News image" />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text small text-muted mb-1">
                         <i class="bi bi-person"></i> <strong>Tác giả:</strong> {{ post.Author || 'Ẩn danh' }} |
                         <i class="bi bi-calendar"></i> <strong>Ngày đăng:</strong> {{ formatDate(post.DatePost) }}
                     </p>
-                    <p class="mb-0">{{ post.description || "Không có mô tả." }}</p>
-                    <router-link :to="`/news/${post.id}`" class="read-more">Xem chi tiết</router-link>
+                    <p class="card-text mb-2">{{ post.description || 'Không có mô tả.' }}</p>
+                    <router-link :to="`/news/${post.id}`" class="btn btn-outline-primary mt-auto">Xem chi tiết</router-link>
                 </div>
             </div>
         </div>
-        
-        <div v-else class="no-news">
-            <p>Không có bài viết nào để hiển thị.</p>
-        </div>
     </div>
+</div>
+
+</div>
+
 </template>
 
 <script>
@@ -97,33 +105,67 @@ export default {
 
 <style scoped>
 .news-container {
-    width: 100vw;
-    flex-direction: column;
+    background-color: #f4f4f4;
+    padding-bottom: 50px;
+    min-height: 100vh;
 }
+
 .news-header {
     text-align: center;
-    background: #f8f9fa;
-    padding: 20px;
-    border-bottom: 3px solid #ddd;
+    background: white;
+    padding: 30px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
-.read-more {
-    display: inline-block;
-    padding: 10px 15px;
-    background: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
+
+.news-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
 }
-.read-more:hover {
-    background: #0056b3;
+
+.news-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
 }
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.navbar {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 .navbar-nav .nav-link {
-    cursor: pointer;
+    transition: 0.3s ease;
 }
-.no-news {
-    text-align: center;
-    padding: 20px;
-    color: #666;
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:hover {
+    background: #0056b3;
+    color: #fff !important;
+    border-radius: 4px;
 }
+
+.btn-outline-primary {
+    font-weight: 500;
+    border-radius: 20px;
+}
+
 </style>
